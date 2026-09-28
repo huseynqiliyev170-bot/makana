@@ -1,0 +1,45 @@
+/* ── Makana by Ruh — design tokens ─────────────────────────────────
+   Identity: "Şəbəkə Editorial" — shebeke lattice light, karabakh dye
+   palette. Ink umber, silk paper, antique brass, pomegranate.        */
+
+:root {
+  /* surfaces */
+  --paper: #f7f3ea;
+  --paper-2: #efe8da;
+  --paper-3: #e4d9c4;
+  --night: #171009;
+  --night-2: #221811;
+
+  /* ink */
+  --ink: #221812;
+  --ink-2: #4a3b2e;
+  --ink-3: #8a7862;
+  --night-text: #ede3d2;
+  --night-muted: #a2907a;
+
+  /* dyes */
+  --gold: #a8823c;
+  --gold-2: #c9a35c;
+  --pom: #8e2a32;
+  --firuze: #2a6f66;
+
+  /* hairlines */
+  --line: rgba(34, 24, 18, 0.14);
+  --line-2: rgba(34, 24, 18, 0.3);
+  --line-inv: rgba(237, 227, 210, 0.16);
+  --line-gold: rgba(168, 130, 60, 0.38);
+
+  /* type */
+  --ff-display: "Cormorant", "Times New Roman", serif;
+  --ff-body: "Commissioner", "Segoe UI", sans-serif;
+
+  /* motion */
+  --ease: cubic-bezier(0.65, 0.05, 0.36, 1);
+  --spring: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* layout */
+  --wrap: 1300px;
+  --gut: clamp(20px, 4vw, 56px);
+  --sec-pad: clamp(76px, 10vh, 132px);
+  --hdr-h: 74px;
+}

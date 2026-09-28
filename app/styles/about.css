@@ -1,0 +1,216 @@
+/* ── /about — the founder's letter ─────────────────────────────────
+   Lives inside the .home-mono identity, so every token (paper, ink,
+   display serif, hairlines) is already the monochrome one. The page is
+   deliberately spare: a title stage, a single narrow measure of prose,
+   a signature, one path onward. The only flourish is the portrait
+   draining graphite and warming back to colour on hover — the same
+   gesture the home hero makes on load, so the two pages rhyme. */
+
+/* ── Title stage ────────────────────────────────────────────────── */
+
+.ab-hero {
+  padding-top: calc(var(--hdr-h) + clamp(40px, 9vh, 96px));
+  padding-bottom: clamp(40px, 7vh, 80px);
+}
+
+.ab-hero-in {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 42%);
+  align-items: center;
+  gap: clamp(40px, 6vw, 88px);
+}
+
+.ab-kick {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ab-kick i {
+  width: 40px;
+  height: 1px;
+  background: var(--line-2);
+  flex: none;
+}
+
+.ab-kick span {
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.ab-name {
+  margin-top: clamp(16px, 2.4vh, 26px);
+  font-family: var(--ff-display);
+  font-weight: 500;
+  font-size: clamp(2.8rem, 7vw, 6rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.ab-name em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-2);
+}
+
+/* the founder's first sentence — under the name, in the display face */
+.ab-hero-copy .ab-lead {
+  margin-top: clamp(20px, 3vh, 30px);
+  max-width: 26ch;
+  font-family: var(--ff-display);
+  font-size: clamp(1.25rem, 2.1vw, 1.7rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--ink-2);
+}
+
+/* portrait — graphite until the cursor returns its colour */
+.ab-portrait {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--paper-3);
+}
+
+.ab-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.04);
+  transition: filter 0.9s var(--ease), transform 1s var(--ease);
+}
+
+.ab-portrait:hover img {
+  filter: grayscale(0);
+  transform: scale(1.02);
+}
+
+/* ── The letter ─────────────────────────────────────────────────── */
+
+.ab-letter-sec {
+  padding-bottom: var(--sec-pad);
+}
+
+.ab-letter {
+  max-width: 62ch;
+  margin-inline: auto;
+  border-top: 1px solid var(--line);
+  padding-top: clamp(34px, 5vh, 56px);
+}
+
+.ab-p {
+  margin-top: clamp(20px, 2.6vh, 28px);
+  font-size: clamp(0.98rem, 1.1vw, 1.04rem);
+  line-height: 1.82;
+  color: var(--ink-2);
+}
+
+/* opening line of the letter, set slightly larger as a lede */
+.ab-p--first {
+  margin-top: 0;
+  font-size: clamp(1.06rem, 1.3vw, 1.16rem);
+  line-height: 1.72;
+  color: var(--ink);
+}
+
+/* ── Signature ──────────────────────────────────────────────────── */
+
+.ab-sign {
+  max-width: 62ch;
+  margin: clamp(44px, 7vh, 76px) auto 0;
+  text-align: center;
+}
+
+.ab-rule {
+  display: block;
+  width: 1px;
+  height: 52px;
+  margin: 0 auto clamp(28px, 4vh, 40px);
+  background: linear-gradient(to bottom, var(--line-2), transparent);
+}
+
+.ab-signature {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.ab-welcome {
+  margin-top: clamp(14px, 2vh, 20px);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ── Onward ─────────────────────────────────────────────────────── */
+
+.ab-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(40px, 6vh, 64px);
+}
+
+/* ── Responsive ─────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .ab-hero-in {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: clamp(28px, 5vw, 44px);
+  }
+
+  /* portrait leads on a phone — the face first, then the name reads
+     as a caption under it */
+  .ab-hero-copy {
+    order: 2;
+  }
+
+  .ab-portrait {
+    order: 1;
+    aspect-ratio: 4 / 5;
+  }
+
+  .ab-name {
+    font-size: clamp(2.5rem, 12vw, 3.6rem);
+  }
+
+  .ab-hero-copy .ab-lead {
+    max-width: 34ch;
+    font-size: clamp(1.15rem, 4.6vw, 1.35rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .ab-letter,
+  .ab-sign {
+    max-width: none;
+  }
+
+  .ab-p {
+    font-size: 0.98rem;
+    line-height: 1.78;
+  }
+
+  .ab-cta .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-portrait img {
+    transition: none;
+    filter: grayscale(0);
+  }
+}

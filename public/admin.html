@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Makana Admin">
+<meta name="theme-color" content="#F6F0E4">
+<meta name="color-scheme" content="light">
+<title>Makana by Ruh — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F0E4;--bg2:#FBF7EE;--bg3:#EDE3CE;--ink:#1F1B16;--ink2:#3A3128;--muted:#7A6E5C;--line:rgba(31,27,22,.10);--gold:#B08840;--gold-l:#D4A95C;--gold-d:#8E6A2E;--danger:#B94A3B;--shadow:0 30px 60px -30px rgba(31,27,22,.18);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--ink);font-family:'Jost',sans-serif;font-weight:300;-webkit-font-smoothing:antialiased;min-height:100vh;}
+a{color:var(--gold-d);}
+::selection{background:var(--gold-l);color:var(--ink);}
+.sr{position:absolute;left:-9999px;}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-box{background:#fff;padding:44px 40px;border-radius:10px;border:1px solid var(--line);box-shadow:var(--shadow);width:100%;max-width:420px;}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:.22em;color:var(--ink);text-align:center;margin-bottom:6px;}
+.login-logo em{color:var(--gold-d);font-style:normal;}
+.login-sub{text-align:center;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+.fg{margin-bottom:18px;}
+.fg label{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px;}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:13px 14px;color:var(--ink);font-family:inherit;font-size:14px;font-weight:300;outline:none;transition:border-color .3s;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold-d);background:#fff;}
+.fg textarea{resize:vertical;min-height:80px;}
+.btn{background:var(--ink);color:var(--bg);border:none;padding:13px 24px;font-family:inherit;font-size:11px;font-weight:500;letter-spacing:.25em;text-transform:uppercase;border-radius:999px;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;}
+.btn:hover{background:var(--gold-d);color:#fff;}
+.btn.ghost{background:transparent;color:var(--ink2);border:1px solid var(--line);}
+.btn.ghost:hover{border-color:var(--gold-d);color:var(--gold-d);background:transparent;}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid rgba(185,74,59,.4);}
+.btn.danger:hover{background:var(--danger);color:#fff;border-color:var(--danger);}
+.btn.full{width:100%;justify-content:center;}
+.err{background:rgba(185,74,59,.1);border:1px solid rgba(185,74,59,.3);color:var(--danger);padding:10px 14px;border-radius:6px;font-size:12px;margin-bottom:18px;display:none;}
+.err.on{display:block;}
+
+/* SHELL */
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh;}
+aside{background:#fff;border-right:1px solid var(--line);padding:30px 22px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;}
+.aside-logo{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:.22em;margin-bottom:40px;color:var(--ink);}
+.aside-logo em{color:var(--gold-d);font-style:normal;}
+.side-nav{display:flex;flex-direction:column;gap:4px;}
+.side-nav button{background:none;border:none;cursor:pointer;text-align:left;padding:12px 14px;font-family:inherit;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);border-radius:6px;transition:all .3s;}
+.side-nav button:hover{background:var(--bg2);color:var(--gold-d);}
+.side-nav button.on{background:var(--ink);color:var(--bg);}
+.aside-bottom{margin-top:auto;display:flex;flex-direction:column;gap:10px;font-size:11px;letter-spacing:.1em;color:var(--muted);}
+.aside-bottom a{font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;}
+
+main{padding:40px 48px 80px;max-width:1400px;}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;margin-bottom:4px;color:var(--ink);}
+.page-sub{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:30px;}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap;}
+.filter{display:flex;align-items:center;gap:10px;}
+.filter select{background:#fff;border:1px solid var(--line);padding:10px 14px;font-family:inherit;font-size:12px;border-radius:999px;color:var(--ink);min-width:180px;}
+
+/* TABLE */
+.tbl{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.tbl-head,.tbl-row{display:grid;grid-template-columns:56px 2fr 1fr 1fr .7fr 120px;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);}
+.tbl-head{background:var(--bg2);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.tbl-row:last-child{border-bottom:none;}
+.tbl-row:hover{background:var(--bg2);}
+.tbl-row img{width:48px;height:60px;object-fit:cover;border-radius:4px;background:var(--bg3);}
+.pname{font-size:14px;color:var(--ink);}
+.psub{font-size:11px;color:var(--muted);margin-top:2px;}
+.pprice{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold-d);}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;letter-spacing:.15em;text-transform:uppercase;}
+.pill.on{background:rgba(176,136,64,.15);color:var(--gold-d);}
+.pill.off{background:rgba(31,27,22,.08);color:var(--muted);}
+.row-actions{display:flex;gap:8px;justify-content:flex-end;}
+.row-actions button{font-size:10px;padding:7px 12px;letter-spacing:.2em;}
+
+/* CATEGORIES */
+.cat-grid-admin{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.cat-tile{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px;transition:all .3s;}
+.cat-tile:hover{border-color:var(--gold);box-shadow:var(--shadow);}
+.cat-tile h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:4px;}
+.cat-tile .slug{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.cat-tile .cat-actions{display:flex;gap:8px;}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(31,27,22,.55);backdrop-filter:blur(6px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal.on{display:flex;}
+.modal-box{background:#fff;border-radius:12px;padding:32px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow);}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:22px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px;}
+.thumb{display:flex;align-items:center;gap:14px;margin-bottom:8px;}
+.thumb img{width:80px;height:100px;object-fit:cover;border-radius:6px;background:var(--bg3);border:1px solid var(--line);}
+.thumb-empty{width:80px;height:100px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1.5px dashed var(--line);border-radius:6px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+
+/* gallery grid in modal */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px;min-height:150px;}
+.gallery-item{position:relative;height:150px;border-radius:6px;overflow:hidden;background:var(--bg3);border:1px solid var(--line);cursor:grab;display:flex;align-items:center;justify-content:center;}
+.gallery-item:first-child{outline:2px solid var(--gold-d);outline-offset:-2px;}
+.gallery-item img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;}
+.gallery-item.dragging{opacity:.4;}
+.gallery-item .gi-actions{position:absolute;top:4px;right:4px;display:flex;gap:4px;}
+.gallery-item .gi-actions button{background:rgba(31,27,22,.8);color:#fff;border:none;width:22px;height:22px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;}
+.gallery-item .gi-actions button:hover{background:var(--danger);}
+.gallery-item .gi-cover{position:absolute;bottom:4px;left:4px;background:var(--gold-d);color:#fff;font-size:8px;letter-spacing:.15em;text-transform:uppercase;padding:2px 6px;border-radius:999px;}
+.gallery-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:20px;}
+.upload-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg2);border:1px solid var(--line);border-radius:999px;cursor:pointer;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);transition:all .3s;}
+.upload-btn:hover{border-color:var(--gold-d);color:var(--gold-d);}
+.hint{font-size:11px;color:var(--muted);margin-top:4px;}
+
+/* image positioning modal */
+.image-position-frame{position:relative;width:100%;height:300px;background:var(--bg3);border:1px solid var(--line);border-radius:8px;overflow:hidden;cursor:move;display:flex;align-items:center;justify-content:center;}
+.image-position-frame img{position:absolute;cursor:grab;user-select:none;}
+.image-position-frame img:active{cursor:grabbing;}
+.image-position-hint{font-size:11px;color:var(--muted);margin-top:10px;text-align:center;}
+.position-controls{display:flex;gap:10px;margin-top:14px;justify-content:center;}
+.position-controls button{padding:8px 14px;font-size:10px;}
+
+.empty{padding:70px 20px;text-align:center;color:var(--muted);font-size:13px;border:1.5px dashed var(--line);border-radius:8px;background:#fff;}
+.loading{padding:40px;text-align:center;color:var(--muted);font-size:12px;letter-spacing:.22em;text-transform:uppercase;}
+
+@media(max-width:1024px){
+  .shell{grid-template-columns:1fr;}
+  aside{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;gap:16px;padding:16px 18px;background:#fff;border-bottom:1px solid var(--line);z-index:10;}
+  .aside-logo{margin-bottom:0;font-size:16px;}
+  .side-nav{flex-direction:row;gap:2px;flex-wrap:wrap;}
+  .side-nav button{padding:10px 12px;font-size:11px;}
+  .aside-bottom{display:none;}
+  main{padding:20px 18px 60px;}
+  .page-title{font-size:28px;}
+  .toolbar{gap:12px;}
+  .tbl-head{display:none;}
+  .tbl-row{grid-template-columns:1fr;gap:8px;padding:14px;}
+  .tbl-row>div:first-child{display:none;}
+  .row-actions{justify-content:flex-start;}
+  .cat-grid-admin{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+  .cat-tile{padding:18px;}
+  #settingsForm{grid-template-columns:1fr!important;}
+  .upload-btn{padding:8px 14px;font-size:10px;}
+}
+
+@media(max-width:768px){
+  :root{--font-size-base:14px;}
+  
+  nav{display:none;}
+  .shell{grid-template-columns:1fr;}
+  aside{position:sticky;top:0;height:auto;flex-direction:column;align-items:flex-start;gap:12px;padding:14px 16px;background:#fff;border-bottom:1px solid var(--line);z-index:20;}
+  .aside-logo{font-size:14px;margin-bottom:0;}
+  .side-nav{flex-direction:column;width:100%;gap:2px;}
+  .side-nav button{width:100%;text-align:left;padding:10px 12px;font-size:10px;min-height:40px;}
+  .aside-bottom{display:flex;flex-direction:row;gap:12px;margin-top:auto;font-size:10px;}
+  
+  main{padding:16px;max-width:100%;}
+  .page-title{font-size:22px;margin-bottom:4px;}
+  .page-sub{font-size:10px;margin-bottom:18px;}
+  .toolbar{flex-direction:column;gap:10px;margin-bottom:16px;}
+  .filter{width:100%;}
+  .filter select{width:100%;min-width:auto;}
+  .btn{width:100%;padding:12px 16px;font-size:9px;min-height:44px;letter-spacing:.2em;}
+  
+  /* TABLE */
+  .tbl{border-radius:6px;overflow:hidden;}
+  .tbl-head{display:none;}
+  .tbl-row{grid-template-columns:1fr;gap:6px;padding:12px;border-bottom:1px solid var(--line);}
+  .tbl-row:last-child{border-bottom:none;}
+  .tbl-row>div:first-child{display:none;}
+  .tbl-row img{display:none;}
+  .pname{font-size:12px;}
+  .psub{font-size:10px;}
+  .pprice{font-size:16px;}
+  .pill{padding:3px 8px;font-size:9px;}
+  .row-actions{justify-content:flex-start;gap:6px;}
+  .row-actions button{font-size:9px;padding:6px 10px;min-height:36px;}
+  
+  /* CATEGORIES */
+  .cat-grid-admin{grid-template-columns:1fr;gap:10px;}
+  .cat-tile{padding:14px;border-radius:6px;}
+  .cat-tile h3{font-size:16px;}
+  .cat-tile .slug{font-size:9px;}
+  .cat-tile .cat-actions{gap:6px;}
+  
+  /* MODAL */
+  .modal{padding:16px;}
+  .modal-box{padding:20px;max-width:100%;border-radius:8px;}
+  .modal-title{font-size:20px;margin-bottom:16px;}
+  .modal-actions{gap:8px;margin-top:16px;}
+  .btn.ghost{padding:10px 14px;font-size:9px;}
+  
+  /* SETTINGS FORM */
+  #settingsForm{grid-template-columns:1fr!important;gap:14px;}
+  #settingsForm>div:last-child{grid-column:auto;}
+  .fg{margin-bottom:12px;}
+  .fg label{font-size:9px;margin-bottom:6px;}
+  .fg input,.fg textarea,.fg select{padding:11px 12px;font-size:13px;border-radius:4px;}
+  .hint{font-size:10px;margin-top:3px;}
+  
+  /* GALLERY */
+  .thumb{gap:10px;margin-bottom:6px;}
+  .thumb img{width:60px;height:75px;}
+  .thumb-empty{width:60px;height:75px;font-size:9px;}
+  
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;padding:8px;min-height:120px;}
+  .gallery-item{height:120px;border-radius:4px;}
+  .gallery-item .gi-actions button{width:18px;height:18px;font-size:10px;}
+  .gallery-item .gi-cover{padding:2px 4px;font-size:7px;bottom:3px;left:3px;}
+  
+  .upload-btn{padding:8px 12px;font-size:9px;border-radius:4px;}
+  
+  .empty{padding:40px 16px;font-size:12px;border-radius:6px;}
+  .loading{padding:32px 16px;font-size:11px;}
+  
+  .login-wrap{padding:16px;}
+  .login-box{padding:28px 20px;border-radius:8px;}
+  .login-logo{font-size:18px;margin-bottom:4px;}
+  .login-sub{font-size:10px;margin-bottom:24px;}
+  .fg{margin-bottom:14px;}
+  .fg label{font-size:9px;margin-bottom:6px;}
+  .fg input{padding:11px 12px;font-size:13px;border-radius:4px;}
+  .btn.full{width:100%;padding:12px;font-size:9px;min-height:44px;letter-spacing:.2em;}
+  .err{padding:10px 12px;font-size:11px;border-radius:4px;margin-bottom:14px;}
+  .hint{font-size:10px;margin-top:3px;text-align:center;}
+}
+
+@media(max-width:480px){
+  :root{font-size:13px;}
+  
+  aside{padding:12px 14px;gap:10px;}
+  .aside-logo{font-size:13px;}
+  .side-nav button{padding:9px 11px;font-size:9px;min-height:38px;}
+  .aside-bottom{font-size:9px;gap:10px;}
+  
+  main{padding:12px;margin-bottom:50px;}
+  .page-title{font-size:18px;}
+  .page-sub{font-size:9px;margin-bottom:14px;}
+  .toolbar{gap:8px;}
+  .btn{padding:11px 14px;font-size:8px;min-height:40px;}
+  
+  .tbl{border-radius:4px;}
+  .tbl-row{gap:4px;padding:10px;}
+  .pname{font-size:11px;}
+  .psub{font-size:9px;}
+  .pprice{font-size:14px;}
+  .pill{padding:2px 6px;font-size:8px;}
+  .row-actions button{font-size:8px;padding:5px 9px;min-height:34px;}
+  
+  .cat-grid-admin{grid-template-columns:1fr;gap:8px;}
+  .cat-tile{padding:12px;border-radius:4px;}
+  .cat-tile h3{font-size:14px;}
+  .cat-tile .slug{font-size:8px;}
+  .cat-tile .cat-actions{gap:4px;}
+  .cat-tile .cat-actions button{font-size:8px;padding:5px 8px;}
+  
+  .modal{padding:12px;}
+  .modal-box{padding:16px;max-width:100%;border-radius:6px;max-height:95vh;}
+  .modal-title{font-size:16px;margin-bottom:12px;}
+  .modal-actions{gap:6px;margin-top:12px;}
+  
+  #settingsForm{gap:10px;}
+  .fg{margin-bottom:10px;}
+  .fg label{font-size:8px;margin-bottom:4px;letter-spacing:.18em;}
+  .fg input,.fg textarea,.fg select{padding:9px 10px;font-size:12px;border-radius:3px;}
+  .fg textarea{min-height:80px;}
+  
+  .thumb{gap:8px;margin-bottom:4px;}
+  .thumb img{width:50px;height:65px;border-radius:3px;}
+  .thumb-empty{width:50px;height:65px;font-size:8px;border-radius:3px;}
+  
+  .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:4px;padding:6px;min-height:90px;border-radius:4px;}
+  .gallery-item{border-radius:3px;height:90px;}
+  .gallery-item .gi-actions{top:2px;right:2px;gap:2px;}
+  .gallery-item .gi-actions button{width:16px;height:16px;font-size:9px;}
+  .gallery-item .gi-cover{padding:1px 3px;font-size:6px;bottom:2px;left:2px;border-radius:2px;}
+  
+  .upload-btn{padding:7px 11px;font-size:8px;border-radius:3px;min-height:36px;}
+  
+  .empty{padding:32px 12px;font-size:11px;border-radius:4px;}
+  .loading{padding:24px 12px;font-size:10px;}
+  
+  .login-wrap{padding:12px;}
+  .login-box{padding:22px 16px;border-radius:6px;}
+  .login-logo{font-size:16px;margin-bottom:2px;}
+  .login-sub{font-size:9px;margin-bottom:20px;}
+  .fg{margin-bottom:12px;}
+  .fg input{padding:10px 11px;font-size:12px;border-radius:3px;}
+  .btn.full{padding:11px;font-size:8px;min-height:40px;letter-spacing:.18em;}
+  .err{padding:9px 11px;font-size:10px;border-radius:3px;margin-bottom:12px;}
+  .hint{font-size:9px;margin-top:2px;}
+  
+  #setMsg{font-size:11px;}
+}
+
+@media(max-width:320px){
+  :root{font-size:12px;}
+  
+  aside{padding:10px 12px;}
+  .aside-logo{font-size:12px;}
+  .side-nav{width:100%;}
+  .side-nav button{padding:8px 10px;font-size:8px;min-height:36px;}
+  
+  main{padding:10px;}
+  .page-title{font-size:16px;}
+  .page-sub{font-size:8px;}
+  
+  .btn{padding:10px 12px;font-size:7px;min-height:38px;}
+  .tbl-row{gap:3px;padding:8px;}
+  .cat-tile{padding:10px;}
+  .modal-box{padding:14px;}
+  .modal-title{font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginView">
+  <form class="login-box" id="loginForm" autocomplete="off">
+    <div class="login-logo">MAKANA <em>by</em> RUH</div>
+    <div class="login-sub">Admin Panel</div>
+    <div class="err" id="loginErr"></div>
+    <div class="fg"><label>Email</label><input type="email" id="li-email" required autocomplete="username" value=""></div>
+    <div class="fg"><label>Şifrə</label><input type="password" id="li-pass" required autocomplete="current-password"></div>
+    <button class="btn full" type="submit">Daxil ol</button>
+    <div class="hint" style="text-align:center;margin-top:18px;"><a href="/" style="color:var(--muted);text-decoration:none;font-size:10px;letter-spacing:.22em;text-transform:uppercase;">← Sayta qayıt</a></div>
+  </form>
+</div>
+
+<!-- SHELL -->
+<div class="shell" id="appView" style="display:none;">
+  <aside>
+    <div class="aside-logo">MAKANA <em>by</em> RUH</div>
+    <nav class="side-nav">
+      <button class="on" data-tab="products">Məhsullar</button>
+      <button data-tab="categories">Kategoriyalar</button>
+      <button data-tab="settings">Sayt Tənzimləmələri</button>
+    </nav>
+    <div class="aside-bottom">
+      <div id="whoAmI" style="font-size:11px;"></div>
+      <a href="/" style="color:var(--muted);">← Sayta bax</a>
+      <a href="#" id="logoutBtn" style="color:var(--danger);">Çıxış</a>
+    </div>
+  </aside>
+
+  <main>
+    <!-- PRODUCTS -->
+    <section id="tab-products">
+      <div class="page-title">Məhsullar</div>
+      <div class="page-sub">Məhsulları əlavə et, redaktə et və ya sil</div>
+      <div class="toolbar">
+        <div class="filter">
+          <select id="filterCat"><option value="">Bütün kategoriyalar</option></select>
+        </div>
+        <button class="btn" onclick="openProductModal()">+ Yeni Məhsul</button>
+      </div>
+      <div id="productList" class="tbl">
+        <div class="loading">Yüklənir...</div>
+      </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="tab-categories" style="display:none;">
+      <div class="page-title">Kategoriyalar</div>
+      <div class="page-sub">Kategoriyaları idarə et</div>
+      <div class="toolbar">
+        <div></div>
+        <button class="btn" onclick="openCategoryModal()">+ Yeni Kategoriya</button>
+      </div>
+      <div id="categoryList" class="cat-grid-admin">
+        <div class="loading">Yüklənir...</div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="tab-settings" style="display:none;">
+      <div class="page-title">Sayt Tənzimləmələri</div>
+      <div class="page-sub">Hero, Haqqımızda və Lifestyle şəkillərini dəyiş</div>
+      <form id="settingsForm" style="display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:1100px;">
+        <div class="cat-tile" style="padding:22px;">
+          <h3>Hero şəkli</h3>
+          <div class="slug">Ana səhifənin başında görünən şəkil</div>
+          <div class="thumb" style="margin-bottom:12px;">
+            <img id="set-hero-thumb" style="width:110px;height:80px;object-fit:cover;border-radius:6px;">
+          </div>
+          <label class="upload-btn" for="set-hero-file">📷 Yeni şəkil yüklə</label>
+          <input type="file" id="set-hero-file" accept="image/*" class="sr" data-target="hero_image">
+          <div class="hint" style="margin-top:10px;">Və ya URL daxil et:</div>
+          <input type="text" id="set-hero-url" placeholder="https://..." style="margin-top:6px;">
+        </div>
+        <div class="cat-tile" style="padding:22px;">
+          <h3>Haqqımızda şəkli</h3>
+          <div class="slug">"Ruhdan doğulan sənət" bölməsinin şəkli</div>
+          <div class="thumb" style="margin-bottom:12px;">
+            <img id="set-about-thumb" style="width:110px;height:140px;object-fit:cover;border-radius:6px;">
+          </div>
+          <label class="upload-btn" for="set-about-file">📷 Yeni şəkil yüklə</label>
+          <input type="file" id="set-about-file" accept="image/*" class="sr" data-target="about_image">
+          <div class="hint" style="margin-top:10px;">Və ya URL daxil et:</div>
+          <input type="text" id="set-about-url" placeholder="https://..." style="margin-top:6px;">
+        </div>
+        <div class="cat-tile" style="padding:22px;">
+          <h3>Lifestyle şəkli</h3>
+          <div class="slug">"Kişilər üçün İpək" bölməsinin şəkli</div>
+          <div class="thumb" style="margin-bottom:12px;">
+            <img id="set-ls-thumb" style="width:110px;height:80px;object-fit:cover;border-radius:6px;">
+          </div>
+          <label class="upload-btn" for="set-ls-file">📷 Yeni şəkil yüklə</label>
+          <input type="file" id="set-ls-file" accept="image/*" class="sr" data-target="lifestyle_image">
+          <div class="hint" style="margin-top:10px;">Və ya URL daxil et:</div>
+          <input type="text" id="set-ls-url" placeholder="https://..." style="margin-top:6px;">
+        </div>
+        <div class="cat-tile" style="padding:22px;">
+          <h3>Əlaqə</h3>
+          <div class="slug">WhatsApp və Instagram hesablarını yenilə</div>
+          <div class="fg" style="margin-top:14px;"><label>WhatsApp nömrəsi (ölkə kodu ilə, +0 olmadan)</label><input type="text" id="set-whatsapp" placeholder="994998007154"></div>
+          <div class="fg"><label>Instagram username</label><input type="text" id="set-instagram" placeholder="makanabyruh"></div>
+        </div>
+        <div style="grid-column:1/-1;display:flex;justify-content:flex-end;gap:10px;">
+          <div class="err" id="setErr" style="flex:1;"></div>
+          <span id="setMsg" style="color:var(--gold-d);font-size:12px;align-self:center;"></span>
+          <button type="submit" class="btn">Yadda Saxla</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="productModal">
+  <form class="modal-box" id="productForm">
+    <div class="modal-title" id="pm-title">Yeni Məhsul</div>
+    <div class="err" id="pmErr"></div>
+    <input type="hidden" id="pm-id">
+    <div class="fg">
+      <label>Şəkillər (Qalereya)</label>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:8px;justify-content:space-between;flex-wrap:wrap;">
+        <span style="font-size:11px;color:var(--muted);">Ölçü:</span>
+        <input type="range" id="pm-gallery-size" min="80" max="200" value="150" style="flex:0 0 150px;cursor:pointer;">
+        <span id="pm-gallery-size-label" style="font-size:11px;color:var(--muted);min-width:50px;">150px</span>
+      </div>
+      <div id="pm-gallery" class="gallery-grid"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;">
+        <label class="upload-btn" for="pm-file">📷 Kompüterdən yüklə</label>
+        <input type="file" id="pm-file" accept="image/*" multiple class="sr">
+        <input type="text" id="pm-image-url" placeholder="https://... URL daxil et" style="flex:1;min-width:200px;margin:0;">
+        <button type="button" class="btn ghost" id="pm-add-url">+ URL-i əlavə et</button>
+      </div>
+      <div class="hint">Birinci şəkil "üz" şəkli olacaq. Sürüşdürərək sıranı dəyiş.</div>
+    </div>
+    <div class="fg"><label>Kategoriya</label><select id="pm-cat" required></select></div>
+    <div class="fg"><label>Ad (AZ)</label><input type="text" id="pm-name-az" required placeholder="Məs: Xalça Kolleksiyası"></div>
+    <div class="fg"><label>Ad (EN)</label><input type="text" id="pm-name-en" placeholder="Məs: Carpet Collection"></div>
+    <div class="fg"><label>Ad (RU)</label><input type="text" id="pm-name-ru" placeholder="Məs: Ковровая коллекция"></div>
+    <div class="fg"><label>Qısa təsvir (AZ)</label><textarea id="pm-sub-az" placeholder="Məs: Azərbaycan xalçasından ilhamlanan naxışlar"></textarea></div>
+    <div class="fg"><label>Qısa təsvir (EN)</label><textarea id="pm-sub-en" placeholder="Məs: Patterns inspired by Azerbaijani carpets"></textarea></div>
+    <div class="fg"><label>Qısa təsvir (RU)</label><textarea id="pm-sub-ru" placeholder="Məs: Узоры, вдохновлённые азербайджанскими коврами"></textarea></div>
+    <div class="fg"><label>Etiket / Tag (AZ)</label><input type="text" id="pm-tag-az" placeholder="Məs: İpək · Əl İşi"></div>
+    <div class="fg"><label>Etiket / Tag (EN)</label><input type="text" id="pm-tag-en" placeholder="Məs: Silk · Handmade"></div>
+    <div class="fg"><label>Etiket / Tag (RU)</label><input type="text" id="pm-tag-ru" placeholder="Məs: Шёлк · Ручная работа"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="fg"><label>Qiymət (AZN)</label><input type="number" id="pm-price" step="0.01" min="0" placeholder="89"></div>
+      <div class="fg"><label>Sıra</label><input type="number" id="pm-order" step="1" value="0"></div>
+    </div>
+    <div class="fg"><label><input type="checkbox" id="pm-active" checked> Aktiv (saytda göstər)</label></div>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" onclick="closeModal('productModal')">İmtina</button>
+      <button type="submit" class="btn">Yadda Saxla</button>
+    </div>
+  </form>
+</div>
+
+<!-- CATEGORY MODAL -->
+<div class="modal" id="categoryModal">
+  <form class="modal-box" id="categoryForm">
+    <div class="modal-title" id="cm-title">Yeni Kategoriya</div>
+    <div class="err" id="cmErr"></div>
+    <input type="hidden" id="cm-id">
+    <div class="fg"><label>Ad (AZ)</label><input type="text" id="cm-name-az" required placeholder="Məs: İpək Yaylıqlar"></div>
+    <div class="fg"><label>Ad (EN)</label><input type="text" id="cm-name-en" placeholder="Məs: Silk Scarves"></div>
+    <div class="fg"><label>Ad (RU)</label><input type="text" id="cm-name-ru" placeholder="Məs: Шёлковые платки"></div>
+    <div class="fg"><label>Slug (URL açarı)</label><input type="text" id="cm-slug" placeholder="Avtomatik yaradılacaq" pattern="[a-z0-9-]*"><div class="hint">Boş buraxsan avtomatik yaradılacaq (yalnız kiçik hərf və -)</div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="fg"><label>İkon (1 hərf)</label><input type="text" id="cm-icon" maxlength="2" placeholder="Y"></div>
+      <div class="fg"><label>Sıra</label><input type="number" id="cm-order" value="0"></div>
+    </div>
+    <div class="fg"><label><input type="checkbox" id="cm-active" checked> Aktiv</label></div>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" onclick="closeModal('categoryModal')">İmtina</button>
+      <button type="submit" class="btn">Yadda Saxla</button>
+    </div>
+  </form>
+</div>
+
+<!-- IMAGE POSITIONING MODAL -->
+<div class="modal" id="imagePositionModal">
+  <form class="modal-box" style="max-width:700px;">
+    <div class="modal-title">Rəsimi Çərçivələr</div>
+    <div class="image-position-frame" id="posFrame">
+      <img id="posImage" src="" alt="" style="width:100%;height:auto;">
+    </div>
+    <div class="image-position-hint">Rəsimi yuxarı/aşağı çəkərək çərçivədə konumlandır</div>
+    <div class="position-controls">
+      <button type="button" class="btn ghost" onclick="closeModal('imagePositionModal')">Ləğv et</button>
+      <button type="button" class="btn" onclick="applyImagePosition()">Tətbiq Et</button>
+    </div>
+  </form>
+</div>
+
+<script>
+const API = ''; // same origin
+let TOKEN = localStorage.getItem('makana_admin_token') || '';
+let categoriesCache = [];
+let productsCache = [];
+
+/* ---- utils ---- */
+const $ = id => document.getElementById(id);
+function showErr(id, msg){ const el=$(id); el.textContent=msg||'Xəta baş verdi'; el.classList.add('on'); }
+function getDispName(n){ return typeof n === 'object' && n ? (n.az || Object.values(n)[0] || '') : (n || ''); }
+function getLoc(n, lang){ return typeof n === 'object' && n ? (n[lang] || '') : (lang==='az' ? (n||'') : ''); }
+function hideErr(id){ $(id).classList.remove('on'); }
+function fmtPrice(p){ if(p==null||p==='') return ''; return (Number(p)%1===0?Number(p).toFixed(0):Number(p).toFixed(2))+' ₼'; }
+
+async function api(path, opts={}){
+  const headers = opts.headers || {};
+  if(TOKEN) headers['Authorization'] = 'Bearer ' + TOKEN;
+  if(opts.body && !(opts.body instanceof FormData)){
+    headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(opts.body);
+  }
+  try {
+    const res = await fetch(API + path, {...opts, headers, credentials: 'include'});
+    if(res.status === 401){ logout(); throw new Error('Sessiya bitib, yenidən daxil olun'); }
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok){ throw new Error(data.detail || `Server xətası (${res.status})`); }
+    return data;
+  } catch(error) {
+    if(error instanceof TypeError && error.message.includes('fetch')) {
+      throw new Error('Serverə qoşula bilmədim. Lütfən internet bağlantınızı yoxlayın.');
+    }
+    throw error;
+  }
+}
+
+/* ---- auth ---- */
+async function checkAuth(){
+  if(!TOKEN){ showLogin(); return; }
+  try{
+    const u = await api('/api/auth/me');
+    $('whoAmI').textContent = u.email;
+    showApp();
+  }catch(e){ showLogin(); }
+}
+
+function showLogin(){ $('loginView').style.display='flex'; $('appView').style.display='none'; }
+function showApp(){ $('loginView').style.display='none'; $('appView').style.display='grid'; loadAll(); }
+
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault(); hideErr('loginErr');
+  try{
+    const res = await fetch(API + '/api/auth/login', {
+      method:'POST', 
+      headers:{'Content-Type':'application/json'},
+      credentials: 'include',
+      body: JSON.stringify({email:$('li-email').value.trim(), password:$('li-pass').value})
+    });
+    const data = await res.json().catch(()=>({}));
+    if(!res.ok) {
+      throw new Error(data.detail || data.message || 'Email və ya şifrə yanlışdır');
+    }
+    TOKEN = data.access_token;
+    localStorage.setItem('makana_admin_token', TOKEN);
+    checkAuth();
+  }catch(err){ 
+    showErr('loginErr', err.message || 'Email və ya şifrə yanlışdır'); 
+  }
+});
+
+function logout(){
+  TOKEN = ''; localStorage.removeItem('makana_admin_token'); showLogin();
+}
+$('logoutBtn').addEventListener('click', e => { e.preventDefault(); logout(); });
+
+/* ---- tabs ---- */
+document.querySelectorAll('.side-nav button').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.side-nav button').forEach(x=>x.classList.toggle('on', x===b));
+    const tab = b.dataset.tab;
+    $('tab-products').style.display = tab==='products' ? 'block' : 'none';
+    $('tab-categories').style.display = tab==='categories' ? 'block' : 'none';
+    $('tab-settings').style.display = tab==='settings' ? 'block' : 'none';
+    if(tab==='settings') loadSettings();
+  });
+});
+
+/* ---- data loading ---- */
+async function loadAll(){
+  await loadCategories();
+  await loadProducts();
+}
+
+async function loadCategories(){
+  try{
+    categoriesCache = await api('/api/admin/categories/all');
+    // filter select
+    const fc = $('filterCat');
+    fc.innerHTML = '<option value="">Bütün kategoriyalar</option>' + categoriesCache.map(c=>`<option value="${c.slug}">${escapeHtml(getDispName(c.name))}</option>`).join('');
+    // product modal select
+    const pc = $('pm-cat');
+    pc.innerHTML = categoriesCache.filter(c=>c.active!==false).map(c=>`<option value="${c.slug}">${escapeHtml(getDispName(c.name))}</option>`).join('');
+    // category list
+    renderCategoryList();
+  }catch(e){ $('categoryList').innerHTML = `<div class="empty">${e.message}</div>`; }
+}
+
+function renderCategoryList(){
+  const list = $('categoryList');
+  if(!categoriesCache.length){ list.innerHTML = '<div class="empty">Heç bir kategoriya yoxdur</div>'; return; }
+  list.innerHTML = categoriesCache.map(c => `
+    <div class="cat-tile">
+      <h3>${escapeHtml(getDispName(c.name))}</h3>
+      <div class="slug">/${escapeHtml(c.slug)} · sıra ${c.order||0}</div>
+      <div class="cat-actions">
+        <button class="btn ghost" data-act="edit-cat" data-id="${escapeAttr(c.id)}">Redaktə</button>
+        <button class="btn danger" data-act="del-cat" data-id="${escapeAttr(c.id)}">Sil</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadProducts(){
+  const slug = $('filterCat').value;
+  try{
+    const url = '/api/admin/products/all' + (slug ? '?category=' + encodeURIComponent(slug) : '');
+    productsCache = await api(url);
+    renderProducts(productsCache);
+  }catch(e){ $('productList').innerHTML = `<div class="empty">${e.message}</div>`; }
+}
+$('filterCat').addEventListener('change', loadProducts);
+
+function renderProducts(list){
+  if(!list.length){ $('productList').innerHTML = '<div class="empty">Heç bir məhsul yoxdur. Yuxarıdan əlavə edə bilərsən.</div>'; return; }
+  const byCat = Object.fromEntries(categoriesCache.map(c => [c.slug, c.name]));
+  $('productList').innerHTML = `
+    <div class="tbl-head">
+      <div>Şəkil</div><div>Ad</div><div>Kategoriya</div><div>Qiymət</div><div>Status</div><div></div>
+    </div>
+    ${list.map(p => `
+      <div class="tbl-row">
+        <div>${p.image_url ? `<img src="${escapeAttr(p.image_url)}">` : `<div style="width:48px;height:60px;background:var(--bg3);border-radius:4px;"></div>`}</div>
+        <div>
+          <div class="pname">${escapeHtml(getDispName(p.name))}</div>
+          <div class="psub">${escapeHtml(getDispName(p.sub))}</div>
+        </div>
+        <div style="font-size:12px;color:var(--ink2);">${escapeHtml(getDispName(byCat[p.category_slug]||p.category_slug))}</div>
+        <div class="pprice">${fmtPrice(p.price)}</div>
+        <div><span class="pill ${p.active?'on':'off'}">${p.active?'Aktiv':'Gizli'}</span></div>
+        <div class="row-actions">
+          <button class="btn ghost" data-act="edit-prod" data-id="${escapeAttr(p.id)}">Redaktə</button>
+          <button class="btn danger" data-act="del-prod" data-id="${escapeAttr(p.id)}">Sil</button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+/* ---- delegated actions (survive HTML rebuild) ---- */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-act]');
+  if(!btn) return;
+  const id = btn.getAttribute('data-id');
+  const act = btn.getAttribute('data-act');
+  if(act === 'edit-prod'){
+    const p = productsCache.find(x => x.id === id);
+    if(p) editProduct(p);
+  } else if(act === 'del-prod'){
+    const p = productsCache.find(x => x.id === id);
+    if(p) deleteProduct(p.id, p.name || '');
+  } else if(act === 'edit-cat'){
+    const c = categoriesCache.find(x => x.id === id);
+    if(c) editCategory(c);
+  } else if(act === 'del-cat'){
+    const c = categoriesCache.find(x => x.id === id);
+    if(c) deleteCategory(c.id, c.name || '');
+  }
+});
+
+/* ---- product modal ---- */
+let pmImages = [];
+let positioningImageIndex = -1;
+
+function renderGallery(){
+  const g = $('pm-gallery');
+  if(!pmImages.length){ g.innerHTML = '<div class="gallery-empty">Hələ şəkil yoxdur</div>'; return; }
+  g.innerHTML = pmImages.map((src, i) => `
+    <div class="gallery-item" draggable="true" data-idx="${i}" data-click-position="true">
+      <img src="${escapeAttr(src)}" alt="">
+      ${i===0 ? '<div class="gi-cover">Üz</div>' : ''}
+      <div class="gi-actions">
+        <button type="button" title="Sil" data-act="gal-del" data-idx="${i}">×</button>
+      </div>
+    </div>
+  `).join('');
+  
+  // Add click listener for image positioning
+  document.querySelectorAll('[data-click-position="true"]').forEach(item => {
+    item.addEventListener('click', e => {
+      if(e.target.closest('[data-act]')) return; // Don't open if clicking delete button
+      positioningImageIndex = Number(item.dataset.idx);
+      openImagePositioning(pmImages[positioningImageIndex]);
+    });
+  });
+}
+
+// Image positioning
+let imageDragData = { startX: 0, startY: 0, imgX: 0, imgY: 0, isDragging: false };
+
+function openImagePositioning(src){
+  const img = $('posImage');
+  const frame = $('posFrame');
+  img.src = src;
+  
+  // Reset position
+  img.style.transform = 'translate(0, 0)';
+  img.style.top = '0';
+  img.style.left = '0';
+  
+  // Make sure image is loaded before measuring
+  img.onload = () => {
+    // Center the image if it's smaller than frame
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+    const frameWidth = frame.offsetWidth;
+    const frameHeight = frame.offsetHeight;
+    
+    // If image is smaller than frame, center it
+    if(imgHeight < frameHeight){
+      const offsetY = (frameHeight - imgHeight) / 2;
+      img.style.top = offsetY + 'px';
+    }
+  };
+  
+  $('imagePositionModal').classList.add('on');
+}
+
+function applyImagePosition(){
+  closeModal('imagePositionModal');
+}
+
+// Image dragging in positioning frame
+$('posFrame').addEventListener('mousedown', e => {
+  if(e.target.id !== 'posImage') return;
+  imageDragData.isDragging = true;
+  imageDragData.startX = e.clientX;
+  imageDragData.startY = e.clientY;
+  
+  const img = $('posImage');
+  const transform = img.style.transform.match(/-?\d+/g) || [0, 0];
+  imageDragData.imgX = Number(transform[0]) || 0;
+  imageDragData.imgY = Number(transform[1]) || 0;
+  
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', e => {
+  if(!imageDragData.isDragging) return;
+  
+  const img = $('posImage');
+  const frame = $('posFrame');
+  
+  const deltaX = e.clientX - imageDragData.startX;
+  const deltaY = e.clientY - imageDragData.startY;
+  
+  let newX = imageDragData.imgX + deltaX;
+  let newY = imageDragData.imgY + deltaY;
+  
+  // Boundary constraints
+  const imgWidth = img.offsetWidth;
+  const imgHeight = img.offsetHeight;
+  const frameWidth = frame.offsetWidth;
+  const frameHeight = frame.offsetHeight;
+  
+  // Don't let image move too far right/left
+  newX = Math.max(-(imgWidth - frameWidth), Math.min(0, newX));
+  // Don't let image move too far up/down
+  newY = Math.max(-(imgHeight - frameHeight), Math.min(0, newY));
+  
+  img.style.transform = `translate(${newX}px, ${newY}px)`;
+});
+
+document.addEventListener('mouseup', () => {
+  imageDragData.isDragging = false;
+});
+
+// Gallery size control
+$('pm-gallery-size').addEventListener('input', e => {
+  const size = e.target.value;
+  $('pm-gallery-size-label').textContent = size + 'px';
+  $('pm-gallery').style.setProperty('--gallery-item-height', size + 'px');
+  document.querySelectorAll('#pm-gallery .gallery-item').forEach(item => {
+    item.style.height = size + 'px';
+  });
+});
+
+function addImage(url){
+  url = (url||'').trim();
+  if(!url) return;
+  if(pmImages.includes(url)) return;
+  pmImages.push(url);
+  renderGallery();
+}
+
+function openProductModal(){
+  $('pm-title').textContent = 'Yeni Məhsul';
+  $('productForm').reset();
+  $('pm-id').value = '';
+  $('pm-name-az').value = '';
+  $('pm-name-en').value = '';
+  $('pm-name-ru').value = '';
+  $('pm-sub-az').value = '';
+  $('pm-sub-en').value = '';
+  $('pm-sub-ru').value = '';
+  $('pm-tag-az').value = '';
+  $('pm-tag-en').value = '';
+  $('pm-tag-ru').value = '';
+  $('pm-active').checked = true;
+  $('pm-gallery-size').value = 150;
+  $('pm-gallery-size-label').textContent = '150px';
+  $('pm-gallery').style.setProperty('--gallery-item-height', '150px');
+  pmImages = [];
+  renderGallery();
+  hideErr('pmErr');
+  $('productModal').classList.add('on');
+}
+function editProduct(p){
+  $('pm-title').textContent = 'Məhsulu Redaktə Et';
+  $('pm-id').value = p.id;
+  $('pm-cat').value = p.category_slug || '';
+  $('pm-name-az').value = getLoc(p.name, 'az');
+  $('pm-name-en').value = getLoc(p.name, 'en');
+  $('pm-name-ru').value = getLoc(p.name, 'ru');
+  $('pm-sub-az').value = getLoc(p.sub, 'az');
+  $('pm-sub-en').value = getLoc(p.sub, 'en');
+  $('pm-sub-ru').value = getLoc(p.sub, 'ru');
+  $('pm-tag-az').value = getLoc(p.tag, 'az');
+  $('pm-tag-en').value = getLoc(p.tag, 'en');
+  $('pm-tag-ru').value = getLoc(p.tag, 'ru');
+  $('pm-price').value = p.price ?? '';
+  $('pm-order').value = p.order || 0;
+  $('pm-active').checked = p.active !== false;
+  $('pm-gallery-size').value = 150;
+  $('pm-gallery-size-label').textContent = '150px';
+  $('pm-gallery').style.setProperty('--gallery-item-height', '150px');
+  pmImages = Array.isArray(p.images) && p.images.length ? [...p.images] : (p.image_url ? [p.image_url] : []);
+  renderGallery();
+  hideErr('pmErr');
+  $('productModal').classList.add('on');
+}
+
+/* gallery — remove + add via URL + upload multiple */
+$('pm-gallery').addEventListener('click', e => {
+  const b = e.target.closest('[data-act="gal-del"]');
+  if(!b) return;
+  const idx = Number(b.dataset.idx);
+  pmImages.splice(idx, 1);
+  renderGallery();
+});
+$('pm-add-url').addEventListener('click', () => {
+  const url = $('pm-image-url').value.trim();
+  if(!url){ return; }
+  addImage(url);
+  $('pm-image-url').value = '';
+});
+$('pm-image-url').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){ e.preventDefault(); $('pm-add-url').click(); }
+});
+$('pm-file').addEventListener('change', async e => {
+  const files = Array.from(e.target.files || []);
+  if(!files.length) return;
+  hideErr('pmErr');
+  for(const file of files){
+    const fd = new FormData(); fd.append('file', file);
+    try{
+      const response = await fetch('/api/admin/upload', {
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('makana_admin_token')
+  },
+  body: fd
+});
+
+const res = await response.json();
+      addImage(res.url || res.secure_url);
+    }catch(err){ showErr('pmErr', file.name + ' — ' + err.message); }
+  }
+  e.target.value = '';
+});
+
+/* drag & drop reorder */
+let dragIdx = null;
+$('pm-gallery').addEventListener('dragstart', e => {
+  const it = e.target.closest('.gallery-item'); if(!it) return;
+  dragIdx = Number(it.dataset.idx);
+  it.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+});
+$('pm-gallery').addEventListener('dragend', e => {
+  document.querySelectorAll('.gallery-item.dragging').forEach(x => x.classList.remove('dragging'));
+  dragIdx = null;
+});
+$('pm-gallery').addEventListener('dragover', e => { e.preventDefault(); });
+$('pm-gallery').addEventListener('drop', e => {
+  e.preventDefault();
+  const tgt = e.target.closest('.gallery-item'); if(!tgt || dragIdx===null) return;
+  const toIdx = Number(tgt.dataset.idx);
+  if(toIdx === dragIdx) return;
+  const [moved] = pmImages.splice(dragIdx, 1);
+  pmImages.splice(toIdx, 0, moved);
+  renderGallery();
+});
+
+$('productForm').addEventListener('submit', async e => {
+  e.preventDefault(); hideErr('pmErr');
+  const id = $('pm-id').value;
+  const body = {
+    category_slug: $('pm-cat').value,
+    name: {
+      az: $('pm-name-az').value.trim(),
+      en: $('pm-name-en').value.trim(),
+      ru: $('pm-name-ru').value.trim()
+    },
+    sub: {
+      az: $('pm-sub-az').value.trim(),
+      en: $('pm-sub-en').value.trim(),
+      ru: $('pm-sub-ru').value.trim()
+    },
+    tag: {
+      az: $('pm-tag-az').value.trim(),
+      en: $('pm-tag-en').value.trim(),
+      ru: $('pm-tag-ru').value.trim()
+    },
+    images: pmImages,
+    image_url: pmImages[0] || '',
+    price: $('pm-price').value ? Number($('pm-price').value) : null,
+    order: Number($('pm-order').value || 0),
+    active: $('pm-active').checked
+  };
+  try{
+    if(id) await api('/api/admin/products/' + id, {method:'PUT', body});
+    else await api('/api/admin/products', {method:'POST', body});
+    closeModal('productModal');
+    loadProducts();
+  }catch(err){ showErr('pmErr', err.message); }
+});
+
+async function deleteProduct(id, name){
+  if(!confirm(`"${getDispName(name)}" məhsulunu silmək istədiyinə əminsən?`)) return;
+  try{ await api('/api/admin/products/' + id, {method:'DELETE'}); loadProducts(); }
+  catch(e){ alert(e.message); }
+}
+
+/* ---- category modal ---- */
+function openCategoryModal(){
+  $('cm-title').textContent = 'Yeni Kategoriya';
+  $('categoryForm').reset();
+  $('cm-id').value = '';
+  $('cm-name-az').value = '';
+  $('cm-name-en').value = '';
+  $('cm-name-ru').value = '';
+  $('cm-active').checked = true;
+  $('cm-slug').disabled = false;
+  hideErr('cmErr');
+  $('categoryModal').classList.add('on');
+}
+function editCategory(c){
+  $('cm-title').textContent = 'Kategoriyanı Redaktə Et';
+  $('cm-id').value = c.id;
+  $('cm-name-az').value = getLoc(c.name, 'az');
+  $('cm-name-en').value = getLoc(c.name, 'en');
+  $('cm-name-ru').value = getLoc(c.name, 'ru');
+  $('cm-slug').value = c.slug || '';
+  $('cm-slug').disabled = true;
+  $('cm-icon').value = c.icon || '';
+  $('cm-order').value = c.order || 0;
+  $('cm-active').checked = c.active !== false;
+  hideErr('cmErr');
+  $('categoryModal').classList.add('on');
+}
+
+$('categoryForm').addEventListener('submit', async e => {
+  e.preventDefault(); hideErr('cmErr');
+  const id = $('cm-id').value;
+  const body = {
+    name: {
+      az: $('cm-name-az').value.trim(),
+      en: $('cm-name-en').value.trim(),
+      ru: $('cm-name-ru').value.trim()
+    },
+    slug: $('cm-slug').value.trim(),
+    icon: $('cm-icon').value.trim(),
+    order: Number($('cm-order').value || 0),
+    active: $('cm-active').checked
+  };
+  try{
+    if(id) await api('/api/admin/categories/' + id, {method:'PUT', body});
+    else await api('/api/admin/categories', {method:'POST', body});
+    closeModal('categoryModal');
+    loadCategories();
+  }catch(err){ showErr('cmErr', err.message); }
+});
+
+async function deleteCategory(id, name){
+  if(!confirm(`"${getDispName(name)}" kategoriyasını silmək istədiyinə əminsən? Məhsullar saxlanılacaq amma gizlədiləcək.`)) return;
+  try{ await api('/api/admin/categories/' + id, {method:'DELETE'}); loadAll(); }
+  catch(e){ alert(e.message); }
+}
+
+function closeModal(id){ $(id).classList.remove('on'); }
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if(e.target===m) m.classList.remove('on'); }));
+
+/* ---- escape helpers ---- */
+function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
+function escapeAttr(s){ return String(s??'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+/* ---- settings ---- */
+const SETTINGS_KEYS = {
+  hero_image: { url:'set-hero-url', thumb:'set-hero-thumb' },
+  about_image:{ url:'set-about-url',thumb:'set-about-thumb'},
+  lifestyle_image:{ url:'set-ls-url',thumb:'set-ls-thumb'},
+};
+let settingsCache = {};
+
+async function uploadSettingImage(file, key) {
+  const fd = new FormData();
+  fd.append('file', file);
+
+  const res = await fetch('/api/admin/upload', {
+    method: 'POST',
+    body: fd
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    alert('Upload error');
+    return;
+  }
+
+  const ref = SETTINGS_KEYS[key];
+
+  document.getElementById(ref.url).value = data.url;
+  document.getElementById(ref.thumb).src = data.url;
+
+  settingsCache[key] = data.url;
+}
+
+async function loadSettings(){
+  try{
+    settingsCache = await fetch('/api/settings').then(r=>r.json());
+    Object.entries(SETTINGS_KEYS).forEach(([k, ref])=>{
+      const v = settingsCache[k] || '';
+      $(ref.url).value = v;
+      $(ref.thumb).src = v;
+    });
+    $('set-whatsapp').value = settingsCache.whatsapp || '';
+    $('set-instagram').value = settingsCache.instagram || '';
+  }catch(e){ console.error('settings load', e); }
+}
+
+/* sync thumb when URL typed */
+Object.entries(SETTINGS_KEYS).forEach(([k, ref])=>{
+  $(ref.url).addEventListener('input', e=>{ $(ref.thumb).src = e.target.value.trim(); });
+});
+
+/* upload → fill URL + thumb */
+document.querySelectorAll('#settingsForm input[type=file]').forEach(inp=>{
+  inp.addEventListener('change', async e=>{
+    const file = e.target.files[0]; if(!file) return;
+    const targetKey = inp.dataset.target;
+    const ref = SETTINGS_KEYS[targetKey]; if(!ref) return;
+    const fd = new FormData(); fd.append('file', file);
+    try{
+      const res = await api('/api/admin/upload', {method:'POST', body: fd});
+      $(ref.url).value = res.url;
+      $(ref.thumb).src = res.url;
+    }catch(err){ showErr('setErr', err.message); }
+  });
+});
+
+$('settingsForm').addEventListener('submit', async e=>{
+  e.preventDefault(); hideErr('setErr'); $('setMsg').textContent='';
+  const body = {
+    hero_image: $('set-hero-url').value.trim(),
+    about_image: $('set-about-url').value.trim(),
+    lifestyle_image: $('set-ls-url').value.trim(),
+    whatsapp: $('set-whatsapp').value.trim(),
+    instagram: $('set-instagram').value.trim(),
+  };
+  try{
+    await api('/api/admin/settings', {method:'PUT', body});
+    $('setMsg').textContent = '✓ Yadda saxlandı';
+    setTimeout(()=>{ $('setMsg').textContent=''; }, 3000);
+  }catch(err){ showErr('setErr', err.message); }
+});
+
+checkAuth();
+</script>
+</body>
+</html>
