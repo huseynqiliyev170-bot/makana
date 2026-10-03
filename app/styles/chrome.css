@@ -839,7 +839,910 @@
   }
 }
 
+/* ================================================================
+   MAKANA — EDITORIAL HERO
+   ================================================================ */
 
+.hero {
+  --hero-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hero-fast: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  min-height: 100svh;
+  height: 100svh;
+  width: 100%;
+  overflow: hidden;
+
+  background: #111;
+  color: #fff;
+
+  isolation: isolate;
+}
+
+
+/* ================================================================
+   IMAGE STAGE
+   ================================================================ */
+
+.hero-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #171717;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform: scale(1.035);
+
+  transition:
+    opacity 1.25s var(--hero-ease),
+    visibility 1.25s var(--hero-ease),
+    transform 6.5s var(--hero-ease);
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+
+  transform: scale(1);
+}
+
+.hero-slide-image {
+  object-fit: cover;
+  object-position: center;
+
+  opacity: 0;
+
+  transform: scale(1.035);
+
+  filter: saturate(0.88);
+
+  transition:
+    opacity 1s ease,
+    transform 7s var(--hero-ease),
+    filter 1.5s ease;
+}
+
+.hero-slide-image.is-loaded {
+  opacity: 1;
+}
+
+.hero-slide.is-active .hero-slide-image {
+  transform: scale(1.045);
+  filter: saturate(0.92);
+}
+
+
+/* ================================================================
+   CINEMATIC OVERLAY
+   ================================================================ */
+
+.hero-slide-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.28) 0%,
+      rgba(0, 0, 0, 0.02) 32%,
+      rgba(0, 0, 0, 0.12) 55%,
+      rgba(0, 0, 0, 0.64) 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* ================================================================
+   SUBTLE FILM GRAIN
+   ================================================================ */
+
+.hero-grain {
+  position: absolute;
+  inset: -50%;
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  opacity: 0.055;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+
+  animation: hero-grain 0.28s steps(2) infinite;
+}
+
+@keyframes hero-grain {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate3d(-2%, 1%, 0);
+  }
+
+  50% {
+    transform: translate3d(1%, -2%, 0);
+  }
+
+  75% {
+    transform: translate3d(2%, 2%, 0);
+  }
+
+  100% {
+    transform: translate3d(-1%, -1%, 0);
+  }
+}
+
+
+/* ================================================================
+   TOP
+   ================================================================ */
+
+.hero-top {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 10;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding:
+    clamp(22px, 3vw, 42px)
+    clamp(22px, 4vw, 64px);
+
+  pointer-events: none;
+}
+
+.hero-brand-mark {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+
+  color: #fff;
+}
+
+.hero-brand-name {
+  font-size: 18px;
+  line-height: 1;
+
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.hero-brand-sub {
+  font-size: 11px;
+  line-height: 1;
+
+  font-weight: 400;
+
+  opacity: 0.68;
+
+  letter-spacing: 0.02em;
+}
+
+.hero-top-center {
+  font-size: 9px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+
+  opacity: 0.72;
+}
+
+.hero-top-right {
+  justify-self: end;
+
+  font-size: 9px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+
+  opacity: 0.72;
+}
+
+
+/* ================================================================
+   MAIN CONTENT
+   ================================================================ */
+
+.hero-content {
+  position: relative;
+
+  z-index: 7;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  pointer-events: none;
+}
+
+.hero-content-inner {
+  width: 100%;
+
+  padding:
+    110px
+    clamp(22px, 7vw, 110px)
+    150px;
+}
+
+
+/* ================================================================
+   EDITORIAL KICKER
+   ================================================================ */
+
+.hero-editorial {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  margin-bottom: clamp(18px, 2vw, 28px);
+
+  font-size: 9px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.23em;
+
+  color: rgba(255, 255, 255, 0.76);
+
+  opacity: 0;
+
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.8s ease 0.1s,
+    transform 0.9s var(--hero-ease) 0.1s;
+}
+
+.hero.is-in .hero-editorial {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-editorial-line {
+  width: 38px;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.72);
+}
+
+
+/* ================================================================
+   TITLE
+   ================================================================ */
+
+.hero-title {
+  max-width: min(900px, 80vw);
+
+  margin: 0;
+  padding: 0;
+
+  font-size: clamp(56px, 8.5vw, 148px);
+  line-height: 0.86;
+
+  font-weight: 400;
+
+  letter-spacing: -0.065em;
+
+  color: #fff;
+
+  text-wrap: balance;
+}
+
+.hero-title-line {
+  display: block;
+
+  width: fit-content;
+
+  opacity: 0;
+
+  transform:
+    translateY(50px)
+    skewY(2deg);
+
+  transform-origin: left bottom;
+
+  transition:
+    opacity 1s ease,
+    transform 1.15s var(--hero-ease);
+
+  transition-delay:
+    calc(0.16s + var(--line-index) * 0.11s);
+}
+
+.hero.is-in .hero-title-line {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    skewY(0);
+}
+
+.hero-title-line-offset {
+  margin-left: clamp(25px, 7vw, 120px);
+}
+
+
+/* ================================================================
+   BOTTOM CONTENT
+   ================================================================ */
+
+.hero-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 40px;
+
+  max-width: 1120px;
+
+  margin-top: clamp(36px, 5vh, 72px);
+}
+
+.hero-description {
+  width: min(300px, 30vw);
+
+  opacity: 0;
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.8s ease 0.48s,
+    transform 0.9s var(--hero-ease) 0.48s;
+}
+
+.hero.is-in .hero-description {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-description p {
+  margin: 0;
+
+  font-size: 11px;
+  line-height: 1.6;
+
+  font-weight: 400;
+
+  color: rgba(255, 255, 255, 0.76);
+}
+
+
+/* ================================================================
+   ACTIONS
+   ================================================================ */
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+
+  pointer-events: auto;
+
+  opacity: 0;
+  transform: translateY(18px);
+
+  transition:
+    opacity 0.8s ease 0.58s,
+    transform 0.9s var(--hero-ease) 0.58s;
+}
+
+.hero.is-in .hero-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  min-width: 170px;
+
+  padding: 14px 17px 14px 19px;
+
+  color: #111;
+  background: #fff;
+
+  text-decoration: none;
+
+  font-size: 10px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    transform 0.35s var(--hero-fast);
+}
+
+.hero-primary svg {
+  width: 15px;
+  height: 15px;
+
+  transition:
+    transform 0.35s var(--hero-fast);
+}
+
+.hero-primary:hover {
+  color: #fff;
+  background: #111;
+
+  transform: translateY(-2px);
+}
+
+.hero-primary:hover svg {
+  transform: translateX(4px);
+}
+
+.hero-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #fff;
+
+  text-decoration: none;
+
+  font-size: 10px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+
+  opacity: 0.85;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s var(--hero-fast);
+}
+
+.hero-whatsapp:hover {
+  opacity: 1;
+
+  transform: translateY(-2px);
+}
+
+.hero-whatsapp svg {
+  width: 15px;
+  height: 15px;
+}
+
+
+/* ================================================================
+   CONTROLS
+   ================================================================ */
+
+.hero-controls {
+  position: absolute;
+
+  left: clamp(22px, 4vw, 64px);
+  right: clamp(22px, 4vw, 64px);
+  bottom: clamp(25px, 3vw, 46px);
+
+  z-index: 12;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+
+  gap: clamp(24px, 4vw, 70px);
+
+  pointer-events: none;
+}
+
+
+/* COUNTER */
+
+.hero-counter {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+
+  min-width: 55px;
+
+  font-size: 9px;
+  line-height: 1;
+
+  letter-spacing: 0.12em;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-counter-current {
+  color: #fff;
+}
+
+
+/* PROGRESS */
+
+.hero-progress {
+  display: flex;
+  align-items: center;
+
+  width: min(340px, 35vw);
+
+  gap: 7px;
+
+  pointer-events: auto;
+}
+
+.hero-progress-item {
+  position: relative;
+
+  flex: 1;
+
+  height: 22px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.hero-progress-item::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 50%;
+
+  height: 1px;
+
+  transform: translateY(-50%);
+
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.hero-progress-item span {
+  position: absolute;
+
+  left: 0;
+  top: 50%;
+
+  width: 0;
+  height: 1px;
+
+  transform: translateY(-50%);
+
+  background: #fff;
+}
+
+.hero-progress-item.is-active span {
+  width: 100%;
+
+  transition:
+    width var(--hero-progress-duration, 5.2s)
+    linear;
+}
+
+
+/* SCROLL */
+
+.hero-scroll {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  font-size: 8px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-scroll-line {
+  width: 40px;
+  height: 1px;
+
+  background: rgba(255, 255, 255, 0.65);
+}
+
+
+/* ================================================================
+   SIDE LABEL
+   ================================================================ */
+
+.hero-side-label {
+  position: absolute;
+
+  right: clamp(18px, 2.5vw, 40px);
+  top: 50%;
+
+  z-index: 10;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  transform:
+    translateY(-50%)
+    rotate(90deg)
+    translateX(50%);
+
+  transform-origin: right center;
+
+  font-size: 8px;
+  line-height: 1;
+
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+
+  color: rgba(255, 255, 255, 0.62);
+
+  pointer-events: none;
+}
+
+.hero-side-label span + span::before {
+  content: "·";
+
+  margin-right: 7px;
+
+  opacity: 0.5;
+}
+
+
+/* ================================================================
+   RESPONSIVE — TABLET
+   ================================================================ */
+
+@media (max-width: 900px) {
+  .hero-top {
+    grid-template-columns: 1fr auto;
+  }
+
+  .hero-top-center {
+    display: none;
+  }
+
+  .hero-content-inner {
+    padding:
+      130px
+      28px
+      160px;
+  }
+
+  .hero-title {
+    max-width: 88vw;
+
+    font-size: clamp(58px, 11vw, 105px);
+  }
+
+  .hero-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+
+    margin-top: 42px;
+
+    gap: 25px;
+  }
+
+  .hero-description {
+    width: min(360px, 65vw);
+  }
+
+  .hero-side-label {
+    display: none;
+  }
+}
+
+
+/* ================================================================
+   RESPONSIVE — MOBILE
+   ================================================================ */
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 100svh;
+    height: 100svh;
+  }
+
+  .hero-stage {
+    background: #171717;
+  }
+
+  .hero-slide-image {
+    object-position: center center;
+  }
+
+  .hero-slide-overlay {
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.34) 0%,
+        rgba(0, 0, 0, 0.02) 36%,
+        rgba(0, 0, 0, 0.2) 58%,
+        rgba(0, 0, 0, 0.72) 100%
+      );
+  }
+
+  .hero-top {
+    padding:
+      22px
+      20px;
+  }
+
+  .hero-brand-name {
+    font-size: 17px;
+  }
+
+  .hero-top-right {
+    font-size: 8px;
+  }
+
+  .hero-content-inner {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    min-height: 100svh;
+
+    padding:
+      110px
+      20px
+      145px;
+  }
+
+  .hero-editorial {
+    margin-bottom: 18px;
+
+    font-size: 8px;
+
+    letter-spacing: 0.19em;
+  }
+
+  .hero-editorial-line {
+    width: 27px;
+  }
+
+  .hero-title {
+    max-width: 94vw;
+
+    font-size: clamp(54px, 15.8vw, 92px);
+
+    line-height: 0.88;
+
+    letter-spacing: -0.065em;
+  }
+
+  .hero-title-line-offset {
+    margin-left: 24px;
+  }
+
+  .hero-bottom {
+    margin-top: 35px;
+
+    gap: 22px;
+  }
+
+  .hero-description {
+    width: min(280px, 78vw);
+  }
+
+  .hero-description p {
+    font-size: 10px;
+    line-height: 1.55;
+  }
+
+  .hero-actions {
+    gap: 19px;
+  }
+
+  .hero-primary {
+    min-width: 145px;
+
+    padding:
+      13px
+      15px;
+
+    font-size: 9px;
+  }
+
+  .hero-whatsapp {
+    font-size: 9px;
+  }
+
+  .hero-controls {
+    left: 20px;
+    right: 20px;
+    bottom: 22px;
+
+    grid-template-columns: auto 1fr;
+
+    gap: 18px;
+  }
+
+  .hero-progress {
+    width: 100%;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+}
+
+
+/* ================================================================
+   VERY SMALL MOBILE
+   ================================================================ */
+
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 51px;
+  }
+
+  .hero-bottom {
+    margin-top: 28px;
+  }
+
+  .hero-description {
+    display: none;
+  }
+
+  .hero-actions {
+    margin-top: 5px;
+  }
+}
+
+
+/* ================================================================
+   REDUCED MOTION
+   ================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .hero-slide-image,
+  .hero-title-line,
+  .hero-editorial,
+  .hero-description,
+  .hero-actions {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .hero-slide-image {
+    transform: none !important;
+  }
+
+  .hero-slide {
+    transform: none !important;
+  }
+
+  .hero-grain {
+    animation: none !important;
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════
    HERO — "Cinema"

@@ -1,170 +1,93 @@
-﻿"use client";
+﻿
+"use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
 import { useSite } from "@/components/SiteProvider";
-import { useStore } from "@/components/store-context";
-import { img, waLink } from "@/lib/links";
-import { ArrowIcon, WhatsAppIcon } from "@/components/icons";
 
-const FALLBACK =
-  "https://res.cloudinary.com/dn2jro6kd/image/upload/v1779456912/qyrn20qmsuus1xefm3h1.jpg";
+const HERO_IMAGES = [
+  "/images/Navy_Geometric_Patterned_Scarf_Close-Up_Detail.jpg",
+  "/images/Sage_Green_Patterned_Scarf_Perfume_Tray_Still_Life.jpg",
+  "/images/White_Mythical_Creature_Print_Scarf_Angle_View.jpg",
+  "/images/Geometric_Pattern_Silk_Scarf_Packaging_Unboxing_Luxury.jpg",
+  "/images/Monochrome_Floral_and_Geometric_Scarf_Perfume_Tray_Still_Life.jpg",
+];
+
+const INTERVAL = 4200;
 
 export default function HomeHero() {
-  const { t, dict } = useSite();
-  const { catalog, phone } = useStore();
-
-  const rootRef = useRef<HTMLElement | null>(null);
-
-  const settings = catalog.settings;
-
-  const imageSrc =
-    settings.hero_image ||
-    settings.lifestyle_image ||
-    settings.about_image ||
-    FALLBACK;
-
-  const lines = [
-    dict["hero.l1"],
-    dict["hero.l2"],
-    dict["hero.l3"],
-  ].filter(Boolean);
+  const [active, setActive] = useState(0);
+  const { t } = useSite();
 
   useEffect(() => {
-    const element = rootRef.current;
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % HERO_IMAGES.length);
+    }, INTERVAL);
 
-    if (!element) return;
-
-    const frame = window.requestAnimationFrame(() => {
-      element.classList.add("is-in");
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-    };
+    return () => window.clearInterval(timer);
   }, []);
 
   return (
-    <section
-      className="hero"
-      id="top"
-      ref={rootRef}
-      aria-labelledby="hero-title"
+    <section className="mk-hero" aria-label="Makana by Ruh">
+      {/* IMAGE SLIDES */}
+      <div className="mk-hero-media">
+  {HERO_IMAGES.map((src, index) => (
+    <div
+      key={src}
+      className={`mk-hero-slide ${
+        index === active ? "is-active" : ""
+      }`}
     >
-      <div className="hero-inner">
-        {/* TOP BAR */}
-        <header className="hero-top">
-          <span className="hero-eyebrow">
-            {t("hero.kick")}
-          </span>
+      <div
+        className="mk-hero-backdrop"
+        style={{ backgroundImage: `url("${src}")` }}
+      />
 
-          <span className="hero-location">
-            Bakı · {t("about.founded")} 2019
-          </span>
-        </header>
+      <div className="mk-hero-photo">
+        <Image
+          src={src}
+          alt=""
+          fill
+          priority={index === 0}
+          sizes="(max-width: 700px) 94vw, 100vw"
+          className="mk-hero-image"
+        />
+      </div>
+    </div>
+  ))}
+</div>
 
-        {/* MAIN CONTENT */}
-        <div className="hero-body">
-          {/* LEFT */}
-          <div className="hero-copy">
-            <div className="hero-copy-top">
-              <span className="hero-kicker">
-                Handcrafted in Baku
-              </span>
+      {/* DARK GRADIENT */}
+      <div className="mk-hero-gradient" />
 
-              <span className="hero-kicker-line" />
-            </div>
+      {/* TOP */}
+      <header className="mk-hero-header">
+        <Link href="/" className="mk-hero-logo">
+          Makana <span>by Ruh</span>
+        </Link>
 
-            <h1
-              className="hero-title"
-              id="hero-title"
-            >
-              {lines.map((line, index) => (
-                <span
-                  className="hero-line"
-                  key={`${line}-${index}`}
-                  style={
-                    {
-                      "--i": index,
-                    } as React.CSSProperties
-                  }
-                >
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: line,
-                    }}
-                  />
-                </span>
-              ))}
-            </h1>
+        <Link href="/shop" className="mk-hero-shop">
+          {t("nav.shop")}
+        </Link>
+      </header>
 
-            <p className="hero-desc">
-              {t("hero.desc")}
-            </p>
+      {/* BOTTOM */}
+      <div className="mk-hero-bottom">
+        <Link href="/shop" className="mk-hero-cta">
+          {t("hero.cta1")}
+          <span>↗</span>
+        </Link>
 
-            {/* ACTIONS */}
-            <div className="hero-actions">
-              <Link
-                href="/shop"
-                className="hero-btn"
-                data-cursor="view"
-              >
-                <span>{t("hero.cta1")}</span>
-                <ArrowIcon />
-              </Link>
+        <div className="mk-hero-counter">
+          <span>{String(active + 1).padStart(2, "0")}</span>
 
-              <a
-                href={waLink("", phone)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hero-link"
-                data-cursor="wa"
-              >
-                <WhatsAppIcon />
-                <span>{t("hero.cta2")}</span>
-              </a>
-            </div>
+          <i />
 
-            {/* MICRO COPY */}
-            <div className="hero-micro">
-              <span className="hero-micro-dot" />
-              <span>Personal selection · Baku</span>
-            </div>
-
-            {/* SOCIAL PROOF */}
-            <div className="hero-proof">
-              
-           
-            </div>
-          </div>
-
-          {/* RIGHT VISUAL */}
-          <figure className="hero-media">
-            <div className="hero-media-image">
-              <Image
-                src={img(imageSrc, 1600)}
-                alt="Makana by Ruh — handcrafted silk collection"
-                fill
-                priority
-                sizes="
-                  (max-width: 700px) 100vw,
-                  (max-width: 1100px) 48vw,
-                  44vw
-                "
-              />
-            </div>
-
-            {/* IMAGE LABEL */}
-            
-
-            {/* IMAGE CAPTION */}
-         
-          </figure>
+          <span>{String(HERO_IMAGES.length).padStart(2, "0")}</span>
         </div>
-
       </div>
     </section>
   );
 }
+
