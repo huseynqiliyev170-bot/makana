@@ -91,7 +91,6 @@ export default function ProductCard({ product, index }: Props) {
             loading="lazy"
           />
         )}
-        {tag && <span className="pcard-flag">{tag}</span>}
         {images.length > 1 && (
           <span className="pcard-dots">
             {images.slice(0, 5).map((_, i) => (
