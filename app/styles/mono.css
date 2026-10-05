@@ -1178,6 +1178,41 @@ a.mchan:hover .ic {
   padding: 0;
 }
 
+/* contact rows with circled icons, echoing the .mftr-soc treatment */
+.mftr-ch li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mftr-ch a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mftr-ch-ic {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border: 1px solid var(--line-inv);
+  border-radius: 50%;
+  color: var(--night-text);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.mftr-ch-ic svg {
+  width: 13px;
+  height: 13px;
+}
+
+.mftr-ch a:hover .mftr-ch-ic {
+  background: var(--night-text);
+  color: var(--night);
+}
+
 .mftr-col a:hover,
 .mftr-col button:hover {
   color: #fff;

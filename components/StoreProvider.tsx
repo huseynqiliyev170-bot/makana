@@ -23,28 +23,17 @@ export function StoreProvider({ catalog, children, initialCat, initialQuery }: P
   const [sort, setSortRaw] = useState<SortKey>("default");
   const [priceMin, setPriceMin] = useState<PriceBound>(null);
   const [priceMax, setPriceMax] = useState<PriceBound>(null);
-  const [limit, setLimit] = useState(9);
   const [viewer, setViewer] = useState<ViewerState>({ product: null, startIndex: 0 });
 
   const phone = (catalog.settings.whatsapp || DEFAULT_PHONE).replace(/\D/g, "") || DEFAULT_PHONE;
   const instagram = catalog.settings.instagram || DEFAULT_INSTAGRAM;
 
-  const setCat = useCallback((slug: string) => {
-    setCatRaw(slug);
-    setLimit(9);
-  }, []);
-  const setQuery = useCallback((q: string) => {
-    setQueryRaw(q);
-    setLimit(9);
-  }, []);
-  const setSort = useCallback((s: SortKey) => {
-    setSortRaw(s);
-    setLimit(9);
-  }, []);
+  const setCat = useCallback((slug: string) => setCatRaw(slug), []);
+  const setQuery = useCallback((q: string) => setQueryRaw(q), []);
+  const setSort = useCallback((s: SortKey) => setSortRaw(s), []);
   const setPriceRange = useCallback((min: PriceBound, max: PriceBound) => {
     setPriceMin(min);
     setPriceMax(max);
-    setLimit(9);
   }, []);
   const resetFilters = useCallback(() => {
     setCatRaw("all");
@@ -52,7 +41,6 @@ export function StoreProvider({ catalog, children, initialCat, initialQuery }: P
     setSortRaw("default");
     setPriceMin(null);
     setPriceMax(null);
-    setLimit(9);
   }, []);
 
   const catName = useCallback(
@@ -140,8 +128,6 @@ export function StoreProvider({ catalog, children, initialCat, initialQuery }: P
       priceMin,
       priceMax,
       setPriceRange,
-      limit,
-      setLimit,
       resetFilters,
       activeFilterCount,
       visible,
@@ -153,7 +139,7 @@ export function StoreProvider({ catalog, children, initialCat, initialQuery }: P
       viewer,
       waFor,
     }),
-    [catalog, phone, instagram, cat, setCat, query, setQuery, sort, setSort, priceMin, priceMax, setPriceRange, limit, resetFilters, activeFilterCount, visible, catName, catCount, catCover, openViewer, closeViewer, viewer, waFor],
+    [catalog, phone, instagram, cat, setCat, query, setQuery, sort, setSort, priceMin, priceMax, setPriceRange, resetFilters, activeFilterCount, visible, catName, catCount, catCover, openViewer, closeViewer, viewer, waFor],
   );
 
   return (

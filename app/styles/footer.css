@@ -138,6 +138,43 @@
   padding: 0;
 }
 
+/* contact rows with circled icons, echoing the .foot-soc treatment */
+.foot-ch li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.foot-ch a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.foot-ch-ic {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border: 1px solid var(--line-inv);
+  border-radius: 50%;
+  color: var(--gold-2);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.foot-ch-ic svg {
+  width: 13px;
+  height: 13px;
+}
+
+.foot-ch a:hover .foot-ch-ic {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--night);
+}
+
 .foot-col a:hover {
   color: var(--night-text);
   transform: translateX(4px);

@@ -28,6 +28,26 @@ export function productImages(p: Product): string[] {
   return p.image_url ? [p.image_url] : [];
 }
 
+/* Scarves and neckwear keep their dimensions inside the tag field
+   ("Ölçü 90*90", "Size 120*120", "Размер 120х120"). The card lifts them out
+   to sit beside the price; whatever tag text remains stays over the photo. */
+const SIZE_RE = /(\d{2,3})\s*[*×xх]\s*(\d{2,3})/i;
+
+/** Normalized dimensions from the tag ("120 × 120"), or "" when there are none. */
+export function productSize(p: Product, lang: Lang): string {
+  const m = tr(p.tag, lang).match(SIZE_RE);
+  return m ? `${m[1]} × ${m[2]}` : "";
+}
+
+/** The tag with the size dimension (and a leftover "Ölçü/Size/Размер" label) removed. */
+export function tagWithoutSize(p: Product, lang: Lang): string {
+  return tr(p.tag, lang)
+    .replace(SIZE_RE, "")
+    .replace(/(?:ölçü|olcu|size|размер)\s*$/i, "")
+    .replace(/^[\s·•—-]+|[\s·•—-]+$/g, "")
+    .trim();
+}
+
 export function productText(p: Product, lang: Lang): string {
   return [tr(p.name, lang), tr(p.sub, lang), tr(p.tag, lang), p.category_slug]
     .join(" ")

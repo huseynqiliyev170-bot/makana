@@ -5,7 +5,7 @@ import Image from "next/image";
 import type { Product } from "@/lib/i18n/types";
 import { useSite } from "@/components/SiteProvider";
 import { useStore } from "@/components/store-context";
-import { fmtPrice, productImages } from "@/lib/format";
+import { fmtPrice, productImages, productSize, tagWithoutSize } from "@/lib/format";
 import { img, waLink } from "@/lib/links";
 import { WhatsAppIcon } from "@/components/icons";
 
@@ -17,18 +17,20 @@ interface Props {
 /**
  * Premium product card in the maison register: a clean 4:5 photograph with
  * no frame, a slow crossfade to the second shot on hover, and a quiet type
- * block beneath (collection label, serif name, one descriptor line, price,
- * WhatsApp order link). Mobile: swipe cycles the cover image.
+ * block beneath (collection label, serif name, one descriptor line, price
+ * with the piece's dimensions beside it, WhatsApp order link). Mobile:
+ * swipe cycles the cover image.
  */
 export default function ProductCard({ product, index }: Props) {
-  const { t, tr } = useSite();
+  const { t, tr, lang } = useSite();
   const { openViewer, catName, phone, waFor } = useStore();
   const [shot, setShot] = useState(0);
 
   const images = productImages(product);
   const name = tr(product.name);
   const sub = tr(product.sub);
-  const tag = tr(product.tag);
+  const tag = tagWithoutSize(product, lang);
+  const size = productSize(product, lang);
   const price = fmtPrice(product.price);
 
   useEffect(() => setShot(0), [product.id]);
@@ -114,9 +116,14 @@ export default function ProductCard({ product, index }: Props) {
         </h3>
         {sub && <p className="pcard-sub">{sub}</p>}
         <div className="pcard-row">
-          {price && (
+          {(price || size) && (
             <div className="pcard-price">
-              {price} <small>{product.currency || "AZN"}</small>
+              {price && (
+                <>
+                  {price} <small>{product.currency || "AZN"}</small>
+                </>
+              )}
+              {size && <span className="pcard-size">{size}</span>}
             </div>
           )}
           <a

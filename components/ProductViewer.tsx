@@ -8,7 +8,7 @@ import type { CSSProperties, TouchEvent as ReactTouchEvent, UIEvent as ReactUIEv
 const useBeforePaint = typeof window === "undefined" ? useEffect : useLayoutEffect;
 import { useSite } from "@/components/SiteProvider";
 import { useStore } from "@/components/store-context";
-import { fmtPrice, productImages } from "@/lib/format";
+import { fmtPrice, productImages, productSize, tagWithoutSize } from "@/lib/format";
 import { img, waLink } from "@/lib/links";
 import {
   ArrowIcon,
@@ -35,7 +35,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
  * monochrome identity on the home page and the warm one on /shop.
  */
 export default function ProductViewer() {
-  const { t, tr, dict } = useSite();
+  const { t, tr, dict, lang } = useSite();
   const { viewer, closeViewer, waFor, phone, catName } = useStore();
 
   const [mobile, setMobile] = useState(false);
@@ -157,7 +157,8 @@ export default function ProductViewer() {
 
   const name = tr(product.name);
   const sub = tr(product.sub);
-  const tag = tr(product.tag);
+  const tag = tagWithoutSize(product, lang);
+  const size = productSize(product, lang);
   const price = fmtPrice(product.price);
   const currency = product.currency || "AZN";
   const orderHref = waLink(waFor(product), phone);
@@ -276,6 +277,7 @@ export default function ProductViewer() {
               {price && (
                 <b id="mgPrice">
                   {price} <small>{currency}</small>
+                  {size && <em className="mg-size">{size}</em>}
                 </b>
               )}
               <a
@@ -397,6 +399,7 @@ export default function ProductViewer() {
             <div className="lb-price">
               <b id="lbPrice">
                 {price} <small>{currency}</small>
+                {size && <em className="lb-size">{size}</em>}
               </b>
               <span>{t("lb.incl")}</span>
             </div>

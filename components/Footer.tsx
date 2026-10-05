@@ -8,7 +8,9 @@ import { useSite } from "@/components/SiteProvider";
 import { useStore } from "@/components/store-context";
 import { waLink, instagramUrl } from "@/lib/links";
 import {
+  ClockIcon,
   InstagramIcon,
+  PinIcon,
   WhatsAppIcon,
 } from "@/components/icons";
 
@@ -122,13 +124,17 @@ export default function Footer() {
           <div className="foot-col">
             <h4>{t("foot.contact")}</h4>
 
-            <ul>
+            <ul className="foot-ch">
               <li>
                 <a
                   href={waLink("", phone)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-cursor="wa"
                 >
+                  <span className="foot-ch-ic" aria-hidden="true">
+                    <WhatsAppIcon />
+                  </span>
                   +{phone.slice(0, 3)}{" "}
                   {phone.slice(3, 5)}{" "}
                   {phone.slice(5, 8)}{" "}
@@ -142,14 +148,28 @@ export default function Footer() {
                   href={instagramUrl(instagram)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-cursor="ig"
                 >
+                  <span className="foot-ch-ic" aria-hidden="true">
+                    <InstagramIcon />
+                  </span>
                   @{instagram}
                 </a>
               </li>
 
-              <li>{t("ct.loc")}</li>
+              <li>
+                <span className="foot-ch-ic" aria-hidden="true">
+                  <PinIcon />
+                </span>
+                {t("ct.loc")}
+              </li>
 
-              <li>{t("foot.hours")}</li>
+              <li>
+                <span className="foot-ch-ic" aria-hidden="true">
+                  <ClockIcon />
+                </span>
+                {t("foot.hours")}
+              </li>
             </ul>
           </div>
         </div>

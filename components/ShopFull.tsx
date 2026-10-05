@@ -14,7 +14,23 @@ import { ArrowIcon, ChevronDownIcon, OrnamentIcon, SearchIcon } from "@/componen
 import ProductCard from "@/components/ProductCard";
 
 const CURRENCY_SYMBOL: Record<string, string> = { AZN: "₼", USD: "$", EUR: "€" };
-const HERO_FALLBACK = "https://res.cloudinary.com/dn2jro6kd/image/upload/v1779456912/qyrn20qmsuus1xefm3h1.jpg";
+
+const HERO_FALLBACK = "https://res.cloudinary.com/zfbewbxk/image/upload/v1791132260/Geometric_Pattern_Silk_Scarf_Packaging_Unboxing_Luxury.jpg";
+const SCARVES_HERO =
+  "https://res.cloudinary.com/zfbewbxk/image/upload/v1791132617/Sage_Green_Patterned_Scarf_Perfume_Tray_Still_Life.jpg";
+
+const TWILLY_HERO =
+  "https://res.cloudinary.com/zfbewbxk/image/upload/v1791133703/Geometric_Pattern_Skinny_Scarf_In-Hand_Lifestyle.jpg";
+
+const BOYUNLUQ_HERO =
+  "https://res.cloudinary.com/zfbewbxk/image/upload/v1791135882/Cream_and_Gold_Geometric_Silk_Scarf_Angle_View.jpg";
+
+const CANDLES_HERO =
+  "https://res.cloudinary.com/zfbewbxk/image/upload/v1791136690/Cream_Floral_Decorated_Pillar_Candles_Evening_Ambience_Decor_Story_1.jpg";
+
+const GIFT_HERO =
+  "https://res.cloudinary.com/zfbewbxk/image/upload/v1791160259/makana_nexquian_candle_scarf_gift_set-concrete_shadow_play-083f3c89.jpg";
+
 const EDITORIAL_AT = 6;
 
 interface FacetOption {
@@ -84,7 +100,6 @@ function Facet({ label, options }: { label: string; options: FacetOption[] }) {
 export default function ShopFull() {
   const { t, tr, dict } = useSite();
   const {
-    catalog,
     categories,
     products,
     cat,
@@ -96,8 +111,6 @@ export default function ShopFull() {
     priceMin,
     priceMax,
     setPriceRange,
-    limit,
-    setLimit,
     resetFilters,
     activeFilterCount,
     visible,
@@ -222,9 +235,22 @@ export default function ShopFull() {
     }));
   }, [sort, setSort, t]);
 
-  const heroSrc = cat !== "all" ? catCover(cat) || catalog.settings.hero_image || HERO_FALLBACK : catalog.settings.hero_image || HERO_FALLBACK;
-  const shown = visible.slice(0, limit);
-  const left = visible.length - shown.length;
+  const heroSrc =
+    cat === "scarves"
+      ? SCARVES_HERO
+      : cat === "twilly"
+        ? TWILLY_HERO
+        : cat === "boyunluq"
+          ? BOYUNLUQ_HERO
+          : cat === "candles"
+            ? CANDLES_HERO
+            : cat === "gift"
+              ? GIFT_HERO
+              : cat !== "all"
+
+                ? catCover(cat) || HERO_FALLBACK
+                : HERO_FALLBACK;
+
   const activePriceBand = priceBands.find((b) => b.min === priceMin && b.max === priceMax);
 
   const editorialTile = (
@@ -240,13 +266,13 @@ export default function ShopFull() {
 
   const gridBody = (
     <div className={revealClass("pgrid rv", grid.shown)} ref={grid.ref} id="pgrid">
-      {shown.map((p, i) => (
+      {visible.map((p, i) => (
         <Fragment key={p.id}>
           {i === EDITORIAL_AT && cat === "all" && !query && editorialTile}
           <ProductCard product={p} index={i} />
         </Fragment>
       ))}
-      {!shown.length && (
+      {!visible.length && (
         <div className="shop-empty">
           <OrnamentIcon />
           <p>{t("shop.empty")}</p>
@@ -363,17 +389,7 @@ export default function ShopFull() {
         </div>
       )}
 
-      <div className="wrap shop-grid">
-        {gridBody}
-        {left > 0 && (
-          <div className="shop-more">
-            <button className="btn btn--ghost" type="button" data-cursor="view" onClick={() => setLimit(limit + Math.max(9, Math.min(18, left)))}>
-              <span>{t("shop.more")}</span>
-              <ArrowIcon />
-            </button>
-          </div>
-        )}
-      </div>
+      <div className="wrap shop-grid">{gridBody}</div>
 
       {/* mobile filter sheet */}
       {sheet && (

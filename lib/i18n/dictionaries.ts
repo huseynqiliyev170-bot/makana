@@ -52,7 +52,6 @@ export interface Dictionary {
   "shop.search": string;
   "shop.all": string;
   "shop.count": string;
-  "shop.more": string;
   "shop.empty": string;
   "shop.empty2": string;
   "shop.reset": string;
@@ -201,7 +200,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     "shop.search": "Məhsul axtar...",
     "shop.all": "Bütün məhsullar",
     "shop.count": "{n} məhsul",
-    "shop.more": "Daha çox göstər",
     "shop.empty": "Heç nə tapılmadı",
     "shop.empty2": "Başqa söz və ya kateqoriya ilə yoxlayın.",
     "shop.reset": "Filtri təmizlə",
@@ -374,7 +372,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     "shop.search": "Search products...",
     "shop.all": "All products",
     "shop.count": "{n} products",
-    "shop.more": "Show more",
     "shop.empty": "Nothing found",
     "shop.empty2": "Try another keyword or category.",
     "shop.reset": "Clear filters",
@@ -547,7 +544,6 @@ export const dictionaries: Record<Lang, Dictionary> = {
     "shop.search": "Поиск товаров...",
     "shop.all": "Все товары",
     "shop.count": "{n} товаров",
-    "shop.more": "Показать ещё",
     "shop.empty": "Ничего не найдено",
     "shop.empty2": "Попробуйте другое слово или категорию.",
     "shop.reset": "Сбросить фильтры",

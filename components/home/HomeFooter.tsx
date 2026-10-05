@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSite } from "@/components/SiteProvider";
 import { useStore } from "@/components/store-context";
 import { waLink, instagramUrl } from "@/lib/links";
-import { InstagramIcon, WhatsAppIcon } from "@/components/icons";
+import { ClockIcon, InstagramIcon, PinIcon, WhatsAppIcon } from "@/components/icons";
 
 const LOGO = "https://res.cloudinary.com/dn2jro6kd/image/upload/v1779474544/logo_ui0eob.png";
 
@@ -65,19 +65,35 @@ export default function HomeFooter() {
 
           <div className="mftr-col">
             <h4>{t("foot.contact")}</h4>
-            <ul>
+            <ul className="mftr-ch">
               <li>
-                <a href={waLink("", phone)} target="_blank" rel="noopener noreferrer">
+                <a href={waLink("", phone)} target="_blank" rel="noopener noreferrer" data-cursor="wa">
+                  <span className="mftr-ch-ic" aria-hidden="true">
+                    <WhatsAppIcon />
+                  </span>
                   +{phone.slice(0, 3)} {phone.slice(3, 5)} {phone.slice(5, 8)} {phone.slice(8, 10)} {phone.slice(10)}
                 </a>
               </li>
               <li>
-                <a href={instagramUrl(instagram)} target="_blank" rel="noopener noreferrer">
+                <a href={instagramUrl(instagram)} target="_blank" rel="noopener noreferrer" data-cursor="ig">
+                  <span className="mftr-ch-ic" aria-hidden="true">
+                    <InstagramIcon />
+                  </span>
                   @{instagram}
                 </a>
               </li>
-              <li>{t("ct.loc")}</li>
-              <li>{t("foot.hours")}</li>
+              <li>
+                <span className="mftr-ch-ic" aria-hidden="true">
+                  <PinIcon />
+                </span>
+                {t("ct.loc")}
+              </li>
+              <li>
+                <span className="mftr-ch-ic" aria-hidden="true">
+                  <ClockIcon />
+                </span>
+                {t("foot.hours")}
+              </li>
             </ul>
           </div>
         </div>

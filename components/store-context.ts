@@ -27,8 +27,6 @@ export interface StoreState {
   priceMin: PriceBound;
   priceMax: PriceBound;
   setPriceRange: (min: PriceBound, max: PriceBound) => void;
-  limit: number;
-  setLimit: (n: number) => void;
   resetFilters: () => void;
   activeFilterCount: number;
   visible: Product[];
