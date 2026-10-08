@@ -9,7 +9,7 @@ import { useSite } from "@/components/SiteProvider";
 const HERO_IMAGES = [
   "/images/Navy_Geometric_Patterned_Scarf_Close-Up_Detail.jpg",
   "/images/Sage_Green_Patterned_Scarf_Perfume_Tray_Still_Life.jpg",
-  "/images/White_Mythical_Creature_Print_Scarf_Angle_View.jpg",
+  "/images/Geometric_Pattern_Skinny_Scarf_In-Hand_Lifestyle.jpg",
   "/images/Geometric_Pattern_Silk_Scarf_Packaging_Unboxing_Luxury.jpg",
   "/images/Monochrome_Floral_and_Geometric_Scarf_Perfume_Tray_Still_Life.jpg",
 ];
